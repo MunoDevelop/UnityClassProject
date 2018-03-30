@@ -12,6 +12,6 @@ public class PlayerControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        this.transform.Translate(new Vector3(0.0f, 0.0f, 3.0f * Time.deltaTime));
 	}
 }
