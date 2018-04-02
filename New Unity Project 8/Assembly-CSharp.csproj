@@ -49,9 +49,11 @@
      <Compile Include="Assets\BlockControl.cs" />
      <Compile Include="Assets\BlockCreator.cs" />
      <Compile Include="Assets\CameraControl.cs" />
+     <Compile Include="Assets\GameRoot.cs" />
      <Compile Include="Assets\LevelControl.cs" />
      <Compile Include="Assets\MapCreator.cs" />
      <Compile Include="Assets\PlayerControl.cs" />
+     <None Include="Assets\level_data.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

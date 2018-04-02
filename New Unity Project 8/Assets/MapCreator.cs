@@ -30,7 +30,9 @@ public class MapCreator : MonoBehaviour {
     private PlayerControl player = null; // 씬상의Player를보관.
     private BlockCreator block_creator; // BlockCreator를보관.
 
+    public TextAsset level_data_text= null;
 
+    private GameRoot game_root= null;
     // Use this for initialization
     void Start () {
         this.player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
@@ -39,6 +41,10 @@ public class MapCreator : MonoBehaviour {
 
         this.level_control = new LevelControl();
         this.level_control.initialize();
+
+        this.level_control.loadLevelData(this.level_data_text); // 이구문을추가한다.
+
+        this.game_root = this.gameObject.GetComponent<GameRoot>();
     }
 
 
@@ -72,9 +78,11 @@ public class MapCreator : MonoBehaviour {
                                         // BlockCreator스크립트의createBlock()메소드에생성을지시!.
                                         //this.block_creator.createBlock(block_position);// 이제까지의코드에서설정한block_position을건네준다.
                                         // ↓ 볼드체부분을추가.
-        this.level_control.update(); // LevelControl을갱신.
-                                     // level_control에저장된current_block(지금만들블록정보)의height(높이)를씬상의좌표로변환.
-        
+                                        // this.level_control.update(); // LevelControl을갱신.
+        this.level_control.update(this.game_root.getPlayTime());
+
+        // level_control에저장된current_block(지금만들블록정보)의height(높이)를씬상의좌표로변환.
+
         block_position.y = level_control.current_block.height * BLOCK_HEIGHT;
 
         LevelControl.CreationInfo current = this.level_control.current_block;
