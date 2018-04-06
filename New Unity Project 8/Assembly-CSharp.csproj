@@ -53,7 +53,7 @@
      <Compile Include="Assets\LevelControl.cs" />
      <Compile Include="Assets\MapCreator.cs" />
      <Compile Include="Assets\PlayerControl.cs" />
-     <None Include="Assets\level_data.txt" />
+     <None Include="Assets\level_data_text.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

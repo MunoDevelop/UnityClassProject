@@ -64,6 +64,9 @@ public int level = 0; // 난이도.
         this.clear_next_block(ref this.next_block);
     }
 
+    public float getPlayerSpeed() { return (this.level_datas[this.level].player_speed); }
+
+
     private void update_level(ref CreationInfo current, CreationInfo previous)
     {
         switch (previous.block_type)

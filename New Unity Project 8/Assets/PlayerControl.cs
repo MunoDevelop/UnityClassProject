@@ -10,6 +10,10 @@ public class PlayerControl : MonoBehaviour
     public static float JUMP_HEIGHT_MAX = 3.0f;// 점프높이.
     public static float JUMP_KEY_RELEASE_REDUCE = 0.5f; // 점프후의감속도.
 
+    public float current_speed = 0.0f; // 현재 속도.
+    public LevelControl level_control = null; // LevelControl이 저장됨.
+
+
     public enum STEP
     { // Player의각종상태를나타내는자료형(*열거체)
         NONE = -1, // 상태정보없음.
@@ -64,12 +68,16 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         Vector3 velocity = this.GetComponent<Rigidbody>().velocity; // 속도를설정.
+        this.current_speed = this.level_control.getPlayerSpeed();
+
         this.check_landed(); // 착지상태인지체크.
 
 
         switch (this.step)
         {
             case STEP.RUN:
+                velocity.x += PlayerControl.ACCELERATION * Time.deltaTime;
+
             case STEP.JUMP:
                 // 현재위치가한계치보다아래면.
                 if (this.transform.position.y < NARAKU_HEIGHT)
