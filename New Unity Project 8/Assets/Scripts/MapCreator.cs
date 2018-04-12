@@ -71,8 +71,6 @@ public class Tile
 }
 
 
-
-
 public class MapCreator : MonoBehaviour {
     [SerializeField]
     Transform player;
@@ -85,7 +83,7 @@ public class MapCreator : MonoBehaviour {
     private float tileRadious;
     [SerializeField]
     private GameObject tilePrefeb;
-    [SerializeField]
+    //[SerializeField]
     private float noiseSeed;
     [SerializeField]
     private float noiseLevel;
@@ -161,7 +159,10 @@ public class MapCreator : MonoBehaviour {
     }
 
     void Awake () {
-       for(int i = 0; i < 50; i++)
+
+        noiseSeed = Random.Range(12.5f, 16.3f);
+
+       for (int i = 0; i < 50; i++)
         {
             createTile();
         }
