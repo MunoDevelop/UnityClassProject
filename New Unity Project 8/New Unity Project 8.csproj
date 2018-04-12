@@ -227,7 +227,6 @@
     <Compile Include="Assets\Scripts\GameRoot.cs" />
     <Compile Include="Assets\Scripts\LevelControl.cs" />
     <Compile Include="Assets\Scripts\MapCreator.cs" />
-    <Compile Include="Assets\Scripts\Perlin.cs" />
     <Compile Include="Assets\Scripts\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\SmoothFollow.cs" />
   </ItemGroup>

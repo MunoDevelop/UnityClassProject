@@ -16,6 +16,8 @@ public class Tile
         yPos = yPosition;
         IsPassed = false;
     }
+    private GameObject environmentCube;
+
 
     public GameObject Prefeb
     {
@@ -68,6 +70,19 @@ public class Tile
             isPassed = value;
         }
     }
+
+    public GameObject EnvironmentCube
+    {
+        get
+        {
+            return environmentCube;
+        }
+
+        set
+        {
+            environmentCube = value;
+        }
+    }
 }
 
 
@@ -105,12 +120,12 @@ public class MapCreator : MonoBehaviour {
 
     void createTile()
     {
+        float yPos = Mathf.PerlinNoise(tilesCreated/noiseSeed,0.0f) * noiseLevel;
         
-        float yPos = Perlin.Noise(tilesCreated / noiseSeed) *noiseLevel;
         float xPos = tileRadious * tilesCreated+tileRadious/2.0f;
         GameObject instance = Instantiate(tilePrefeb, new Vector3(xPos, yPos, 0), Quaternion.identity);
 
-        if (yPos < -1.7f)
+        if (yPos < 2.0f)
         {
             instance.GetComponent<BoxCollider>().enabled = false;
             instance.GetComponent<Renderer>().enabled = false;
@@ -160,7 +175,7 @@ public class MapCreator : MonoBehaviour {
 
     void Awake () {
 
-        noiseSeed = Random.Range(12.5f, 16.3f);
+        noiseSeed = Random.Range(14.5f, 17.3f);
 
        for (int i = 0; i < 50; i++)
         {
