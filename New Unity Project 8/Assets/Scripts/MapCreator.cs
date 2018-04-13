@@ -98,7 +98,12 @@ public class MapCreator : MonoBehaviour {
     private float tileRadious;
     [SerializeField]
     private GameObject tilePrefeb;
-    //[SerializeField]
+    [SerializeField]
+    float environmentTileRate;
+
+    [SerializeField]
+    private GameObject environmentTilePrefeb;
+
     private float noiseSeed;
     [SerializeField]
     private float noiseLevel;
@@ -130,12 +135,39 @@ public class MapCreator : MonoBehaviour {
             instance.GetComponent<BoxCollider>().enabled = false;
             instance.GetComponent<Renderer>().enabled = false;
         }
-
-
+        
         Tile tile = new Tile(instance, xPos,yPos);
+        //----------environmentTile
+        if (Random.Range(0, 100) < environmentTileRate)
+        {
+            tile.EnvironmentCube = createEnvironmentTile(xPos);
+        }
+
+
+        //----------
         tileList.Add(tile);
         tilesCreated++;
         //selectMaterial();
+    }
+
+    GameObject createEnvironmentTile(float xPos)
+    {
+        float envX = Random.Range(xPos - 3, xPos + 3);
+        float envY = 0;
+        float envZ = 0;
+        //50 % rate random
+        if (Random.Range(0,100) < 50)
+        {
+            envZ = Random.Range(3, 6);
+        }
+        else
+        {
+            envZ = Random.Range(-3, -6);
+        }
+
+        envY = Random.Range(3, 7);
+
+        return Instantiate(environmentTilePrefeb, new Vector3(envX, envY, envZ), Quaternion.Euler(new Vector3(Random.Range(0,360), Random.Range(0, 360), Random.Range(0, 360))));
     }
 
     int getClosestTileIndex(float playerxPos)
@@ -202,7 +234,7 @@ public class MapCreator : MonoBehaviour {
         else
         {
             //Debug.Log(TileList[0].Prefeb);
-            StartCoroutine (TileList[0].Prefeb.GetComponent<BlockControl>().lateDestroy());
+            StartCoroutine (TileList[0].Prefeb.GetComponent<BlockControl>().lateDestroy(TileList[0].EnvironmentCube));
             TileList.RemoveAt(0);
             createTile();
         }
