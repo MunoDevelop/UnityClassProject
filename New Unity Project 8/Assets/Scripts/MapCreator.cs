@@ -18,6 +18,7 @@ public class Tile
     }
     private GameObject environmentCube;
 
+    private GameObject skeleton;
 
     public GameObject Prefeb
     {
@@ -83,6 +84,19 @@ public class Tile
             environmentCube = value;
         }
     }
+
+    public GameObject Skeleton
+    {
+        get
+        {
+            return skeleton;
+        }
+
+        set
+        {
+            skeleton = value;
+        }
+    }
 }
 
 
@@ -99,7 +113,11 @@ public class MapCreator : MonoBehaviour {
     [SerializeField]
     private GameObject tilePrefeb;
     [SerializeField]
-    float environmentTileRate;
+    private float environmentTileRate;
+    [SerializeField]
+    private GameObject skeletonPrefeb;
+    [SerializeField]
+    private float skeletonRate;
 
     [SerializeField]
     private GameObject environmentTilePrefeb;
@@ -130,13 +148,18 @@ public class MapCreator : MonoBehaviour {
         float xPos = tileRadious * tilesCreated+tileRadious/2.0f;
         GameObject instance = Instantiate(tilePrefeb, new Vector3(xPos, yPos, 0), Quaternion.identity);
 
-        if (yPos < 2.0f)
+        Tile tile = new Tile(instance, xPos, yPos);
+
+        if (yPos < 1.8f)
         {
             instance.GetComponent<BoxCollider>().enabled = false;
             instance.GetComponent<Renderer>().enabled = false;
+        }else if(Random.Range(0, 100) < skeletonRate)
+        {
+            tile.Skeleton = createSkeleton(xPos, yPos);
         }
+
         
-        Tile tile = new Tile(instance, xPos,yPos);
         //----------environmentTile
         if (Random.Range(0, 100) < environmentTileRate)
         {
@@ -145,9 +168,18 @@ public class MapCreator : MonoBehaviour {
 
 
         //----------
+        
+
+
         tileList.Add(tile);
         tilesCreated++;
         //selectMaterial();
+    }
+
+    GameObject createSkeleton(float xPos,float yPos)
+    {
+        
+          return  Instantiate(skeletonPrefeb, new Vector3(xPos, yPos+0.4f, 0), Quaternion.Euler(new Vector3(0,0,0)));
     }
 
     GameObject createEnvironmentTile(float xPos)
@@ -234,7 +266,7 @@ public class MapCreator : MonoBehaviour {
         else
         {
             //Debug.Log(TileList[0].Prefeb);
-            StartCoroutine (TileList[0].Prefeb.GetComponent<BlockControl>().lateDestroy(TileList[0].EnvironmentCube));
+            StartCoroutine (TileList[0].Prefeb.GetComponent<BlockControl>().lateDestroy(TileList[0].EnvironmentCube,tileList[0].Skeleton));
             TileList.RemoveAt(0);
             createTile();
         }
