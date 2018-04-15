@@ -8,7 +8,11 @@ public class BlockControl : MonoBehaviour {
     {
         
         GetComponent<Rigidbody>().useGravity = true;
-        skeleton.GetComponent<Rigidbody>().useGravity = true;
+        if (skeleton != null)
+        {
+            skeleton.GetComponent<Rigidbody>().useGravity = true;
+        }
+       
 
         yield return new WaitForSeconds(1.3f);
         Destroy(envTileCube);

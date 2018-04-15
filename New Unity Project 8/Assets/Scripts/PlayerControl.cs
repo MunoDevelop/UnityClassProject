@@ -25,9 +25,13 @@ public class PlayerControl : MonoBehaviour
     private PlayerState playerState = PlayerState.Run;
 
     [SerializeField]
-    private Avatar fightingUCAvatar;
+    private Transform screwKickPosition;
+
+    List<GameObject> monsterList = new List<GameObject>();
     [SerializeField]
-    private Avatar jumpingUCAvatar;
+    private Moderator moderator;
+    [SerializeField]
+    private float skillXRange;
 
 
     internal PlayerState PlayerState
@@ -69,15 +73,47 @@ public class PlayerControl : MonoBehaviour
        
         if (time>0.9 )
         {
-            //animator.avatar = fightingUCAvatar;
             playerState = PlayerState.Run;
-            //animator.SetBool("Jump", false);
-            //animator.Play("Run");
+            
             characterSpeedByStateRate = 1;
         }     
 
 
     }
+
+    void monsterListUpdate()
+    {
+        monsterList.Clear();
+        
+        foreach (Tile tile in mapCreator.TileList){
+            if (tile.Skeleton != null)
+            {
+                monsterList.Add(tile.Skeleton);
+            }
+        }
+        //Debug.Log(monsterList.Count);
+    }
+
+    void sendToModerator(PlayerSkill ps)
+    {
+        float playerXPosition = transform.position.x;
+         
+        foreach (GameObject monster in monsterList)
+        {
+            float skeletonXPosition = monster.transform.GetChild(1).position.x;
+
+            //Debug.Log(skeletonXPosition);
+            //if monster in x range 
+            if (skeletonXPosition > playerXPosition
+                && (playerXPosition + skillXRange > skeletonXPosition))
+            {
+               // Debug.Log(skeletonXPosition);
+                moderator.calculateDamage(ps, monster);
+                moderator.calculateEffect(ps, monster);
+            }
+        }
+    }
+
 
 private void Awake()
     {
@@ -88,14 +124,23 @@ private void Awake()
     }
     private void Update()
     {
+        string currentState = "";
+
         float time = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         time -= Mathf.Floor(time);
         //Debug.Log(time);
-        string currentState = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        if (animator.GetCurrentAnimatorClipInfo(0).Length > 0)
+        {
+             currentState = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        }
+
+        
 
         autoMoveRight();
         resetCharaterState(time,currentState);
-       
+
+
+        monsterListUpdate();
     }
 
 
@@ -121,6 +166,7 @@ private void Awake()
             playerState = PlayerState.Jab;
             animator.Play("Jab");
             characterSpeedByStateRate = 0;
+            sendToModerator(PlayerSkill.Jab);
         }
         //Hikick
         if (Input.GetKeyDown(KeyCode.U) && isGrounded()
@@ -130,6 +176,7 @@ private void Awake()
             playerState = PlayerState.HiKick;
             animator.Play("HiKick");
             characterSpeedByStateRate = 0;
+            sendToModerator(PlayerSkill.HiKick);
         }
         //SpinKick
         if (Input.GetKeyDown(KeyCode.I) && isGrounded()
@@ -139,6 +186,7 @@ private void Awake()
             playerState = PlayerState.SpinKick;
             animator.Play("SpinKick");
             characterSpeedByStateRate = 0;
+            sendToModerator(PlayerSkill.SpinKick);
         }
         //SamK
         if (Input.GetKeyDown(KeyCode.O) && isGrounded()
@@ -148,6 +196,7 @@ private void Awake()
             playerState = PlayerState.SamK;
             animator.Play("SamK");
             characterSpeedByStateRate = 0;
+            sendToModerator(PlayerSkill.SamK);
         }
         //ScrewKick
         if (Input.GetKeyDown(KeyCode.Y) && isGrounded()
@@ -157,6 +206,7 @@ private void Awake()
             playerState = PlayerState.ScrewKick;
             animator.Play("ScrewKick");
             characterSpeedByStateRate = 0;
+            sendToModerator(PlayerSkill.ScrewKick);
             //GetComponent<Rigidbody>().velocity += new Vector3(4, 0, 0);
         }
         //RisingP
@@ -167,6 +217,7 @@ private void Awake()
             playerState = PlayerState.RisingP;
             animator.Play("RisingP");
             characterSpeedByStateRate = 0;
+            sendToModerator(PlayerSkill.RisingP);
         }
 
     }

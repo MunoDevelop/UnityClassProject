@@ -179,7 +179,7 @@ public class MapCreator : MonoBehaviour {
     GameObject createSkeleton(float xPos,float yPos)
     {
         
-          return  Instantiate(skeletonPrefeb, new Vector3(xPos, yPos+0.4f, 0), Quaternion.Euler(new Vector3(0,0,0)));
+          return  Instantiate(skeletonPrefeb, new Vector3(xPos, yPos+0.4f, 0), Quaternion.Euler(new Vector3(0,-90,0)));
     }
 
     GameObject createEnvironmentTile(float xPos)
