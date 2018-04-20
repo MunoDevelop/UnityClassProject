@@ -146,6 +146,8 @@ public class MapCreator : MonoBehaviour {
     [SerializeField]
     private float noiseLevel;
 
+    [SerializeField]
+    private GameObject follower;
 
 
     internal List<Tile> TileList
@@ -184,7 +186,7 @@ public class MapCreator : MonoBehaviour {
         Tile tile = new Tile(instance, xPos, yPos);
 
         //------problem  rate not correct
-        if (yPos < 1.8f)
+        if (yPos < 1.3f||yPos>5.3f)
         {
             instance.GetComponent<BoxCollider>().enabled = false;
             instance.GetComponent<Renderer>().enabled = false;
@@ -316,6 +318,12 @@ public class MapCreator : MonoBehaviour {
             StartCoroutine (TileList[0].Prefeb.GetComponent<BlockControl>().lateDestroy(TileList[0].EnvironmentCube,tileList[0].Skeleton, tileList[0].Item));
             TileList.RemoveAt(0);
             createTile();
+
+
+            //---for bullet 
+            follower.GetComponent<SmoothFollow>().shoot();
+
+
         }
         
 

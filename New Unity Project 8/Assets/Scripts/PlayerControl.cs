@@ -86,11 +86,15 @@ public class PlayerControl : MonoBehaviour
 
     public void useItem()
     {
+        //StopCoroutine("itemEffect");
+        StopAllCoroutines();
         StartCoroutine(itemEffect());
     }
 
     public IEnumerator itemEffect()
     {
+       
+        
         CharacterSpeedByItem = 1.5f;
         followerState = FollowerState.Follow;
 
@@ -98,6 +102,7 @@ public class PlayerControl : MonoBehaviour
 
         CharacterSpeedByItem = 1f;
         followerState = FollowerState.UnFollow;
+        
     }
 
     Vector3  NextTileMovingVector(Vector3 thisTilePos,Vector3 nextTilePos)

@@ -9,6 +9,8 @@ public class SmoothFollow : MonoBehaviour {
     private Transform followTransform;
     [SerializeField]
     private float followSpeed;
+    [SerializeField]
+    GameObject bulletPrefeb;
 
     PlayerControl playerControl;
 
@@ -17,6 +19,19 @@ public class SmoothFollow : MonoBehaviour {
         playerControl = GameObject.Find("unitychan").GetComponent<PlayerControl>();
 
     }
+
+    public void shoot()
+    {
+        if (playerControl.FollowerState == FollowerState.UnFollow)
+        {
+            return;
+        }
+
+        GameObject bullet = Instantiate(bulletPrefeb, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        bullet.GetComponent<Rigidbody>().velocity = new Vector3(12, 3, 0);
+
+    }
+
 
     // Update is called once per frame
     void LateUpdate () {

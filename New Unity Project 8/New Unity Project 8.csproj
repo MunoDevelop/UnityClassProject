@@ -284,6 +284,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\BlockControl.cs" />
     <Compile Include="Assets\Scripts\BlockCreator.cs" />
+    <Compile Include="Assets\Scripts\BulletControl.cs" />
     <Compile Include="Assets\Scripts\CameraControl.cs" />
     <Compile Include="Assets\Scripts\GameRoot.cs" />
     <Compile Include="Assets\Scripts\GameState.cs" />
