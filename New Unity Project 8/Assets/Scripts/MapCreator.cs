@@ -18,6 +18,8 @@ public class Tile
     }
     private GameObject environmentCube;
 
+    private GameObject item;
+
     private GameObject skeleton;
 
     public GameObject Prefeb
@@ -97,6 +99,19 @@ public class Tile
             skeleton = value;
         }
     }
+
+    public GameObject Item
+    {
+        get
+        {
+            return item;
+        }
+
+        set
+        {
+            item = value;
+        }
+    }
 }
 
 
@@ -120,6 +135,11 @@ public class MapCreator : MonoBehaviour {
     private float skeletonRate;
 
     [SerializeField]
+    private GameObject itemPrefeb;
+    [SerializeField]
+    private float itemRate;
+
+    [SerializeField]
     private GameObject environmentTilePrefeb;
 
     private float noiseSeed;
@@ -141,6 +161,19 @@ public class MapCreator : MonoBehaviour {
         }
     }
 
+    public int TilesCreated
+    {
+        get
+        {
+            return tilesCreated;
+        }
+
+        set
+        {
+            tilesCreated = value;
+        }
+    }
+
     void createTile()
     {
         float yPos = Mathf.PerlinNoise(tilesCreated/noiseSeed,0.0f) * noiseLevel;
@@ -150,6 +183,7 @@ public class MapCreator : MonoBehaviour {
 
         Tile tile = new Tile(instance, xPos, yPos);
 
+        //------problem  rate not correct
         if (yPos < 1.8f)
         {
             instance.GetComponent<BoxCollider>().enabled = false;
@@ -157,9 +191,12 @@ public class MapCreator : MonoBehaviour {
         }else if(Random.Range(0, 100) < skeletonRate)
         {
             tile.Skeleton = createSkeleton(xPos, yPos);
+        }else if (Random.Range(0, 100) < itemRate)
+        {
+            tile.Item = createItem(xPos, yPos);
         }
 
-        
+
         //----------environmentTile
         if (Random.Range(0, 100) < environmentTileRate)
         {
@@ -168,6 +205,7 @@ public class MapCreator : MonoBehaviour {
 
 
         //----------
+
         
 
 
@@ -200,6 +238,15 @@ public class MapCreator : MonoBehaviour {
         envY = Random.Range(3, 7);
 
         return Instantiate(environmentTilePrefeb, new Vector3(envX, envY, envZ), Quaternion.Euler(new Vector3(Random.Range(0,360), Random.Range(0, 360), Random.Range(0, 360))));
+    }
+
+    GameObject createItem(float xPos,float yPos)
+    {
+        float itemX = xPos;
+        float itemY = yPos+0.4f;
+        float itemZ = 0;
+       
+        return Instantiate(itemPrefeb, new Vector3(itemX, itemY, itemZ), Quaternion.Euler(new Vector3(0,0,0)));
     }
 
     int getClosestTileIndex(float playerxPos)
@@ -239,7 +286,7 @@ public class MapCreator : MonoBehaviour {
 
     void Awake () {
 
-        noiseSeed = Random.Range(14.5f, 17.3f);
+        noiseSeed = Random.Range(12.5f, 14.3f);
 
        for (int i = 0; i < 50; i++)
         {
@@ -266,7 +313,7 @@ public class MapCreator : MonoBehaviour {
         else
         {
             //Debug.Log(TileList[0].Prefeb);
-            StartCoroutine (TileList[0].Prefeb.GetComponent<BlockControl>().lateDestroy(TileList[0].EnvironmentCube,tileList[0].Skeleton));
+            StartCoroutine (TileList[0].Prefeb.GetComponent<BlockControl>().lateDestroy(TileList[0].EnvironmentCube,tileList[0].Skeleton, tileList[0].Item));
             TileList.RemoveAt(0);
             createTile();
         }

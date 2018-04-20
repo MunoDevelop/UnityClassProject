@@ -7,6 +7,11 @@ enum PlayerState
     Run, Jump, Jab,SamK,ScrewKick,HiKick,SpinKick,RisingP
 }
 
+enum FollowerState
+{
+    Follow,UnFollow
+}
+
 public class PlayerControl : MonoBehaviour
 {
     [SerializeField]
@@ -17,6 +22,8 @@ public class PlayerControl : MonoBehaviour
     private float characterJumpPower = 6;
 
     private float characterSpeedByStateRate = 1;
+
+    private float characterSpeedByItem = 1;
 
     private MapCreator mapCreator;
 
@@ -33,6 +40,10 @@ public class PlayerControl : MonoBehaviour
     [SerializeField]
     private float skillXRange;
 
+    [SerializeField]
+    private AudioClip baseAttackSound;
+
+    private FollowerState followerState = FollowerState.UnFollow;
 
     internal PlayerState PlayerState
     {
@@ -47,6 +58,48 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    public float CharacterSpeedByItem
+    {
+        get
+        {
+            return characterSpeedByItem;
+        }
+
+        set
+        {
+            characterSpeedByItem = value;
+        }
+    }
+
+    internal FollowerState FollowerState
+    {
+        get
+        {
+            return followerState;
+        }
+
+        set
+        {
+            followerState = value;
+        }
+    }
+
+    public void useItem()
+    {
+        StartCoroutine(itemEffect());
+    }
+
+    public IEnumerator itemEffect()
+    {
+        CharacterSpeedByItem = 1.5f;
+        followerState = FollowerState.Follow;
+
+        yield return new WaitForSeconds(4.1f);
+
+        CharacterSpeedByItem = 1f;
+        followerState = FollowerState.UnFollow;
+    }
+
     Vector3  NextTileMovingVector(Vector3 thisTilePos,Vector3 nextTilePos)
     {
         return nextTilePos - thisTilePos;
@@ -59,12 +112,12 @@ public class PlayerControl : MonoBehaviour
 
         Vector3 moveVec = NextTileMovingVector(new Vector3(tile.XPos, tile.YPos, 0), new Vector3(nextTile.XPos, nextTile.YPos, 0));
         //Debug.Log(moveVec);
-        transform.Translate(moveVec*Time.deltaTime*characterSpeedBase* characterSpeedByStateRate);
+        transform.Translate(moveVec*Time.deltaTime*characterSpeedBase* characterSpeedByStateRate* CharacterSpeedByItem);
     }
   
 
   bool isGrounded(){
-     return Physics.Raycast(transform.position, -Vector3.up,  0.3f);
+     return Physics.Raycast(transform.position, -Vector3.up,  0.7f);
  }
     
 
@@ -104,7 +157,7 @@ public class PlayerControl : MonoBehaviour
 
             //Debug.Log(skeletonXPosition);
             //if monster in x range 
-            if (skeletonXPosition > playerXPosition
+            if (playerXPosition - skillXRange / 2 < skeletonXPosition
                 && (playerXPosition + skillXRange > skeletonXPosition))
             {
                // Debug.Log(skeletonXPosition);
@@ -165,6 +218,8 @@ private void Awake()
         {
             playerState = PlayerState.Jab;
             animator.Play("Jab");
+            GetComponent<AudioSource>().clip = baseAttackSound;
+            GetComponent<AudioSource>().Play();
             characterSpeedByStateRate = 0;
             sendToModerator(PlayerSkill.Jab);
         }

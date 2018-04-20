@@ -4,17 +4,33 @@ using UnityEngine;
 
 public class SmoothFollow : MonoBehaviour {
     [SerializeField]
-    private Transform player;
+    private Transform unfollowTransform;
+    [SerializeField]
+    private Transform followTransform;
     [SerializeField]
     private float followSpeed;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void LateUpdate () {
-        transform.position = Vector3.Lerp(transform.position, player.position, Time.deltaTime * followSpeed);
+    PlayerControl playerControl;
+
+    // Use this for initialization
+    void Start () {
+        playerControl = GameObject.Find("unitychan").GetComponent<PlayerControl>();
+
+    }
+
+    // Update is called once per frame
+    void LateUpdate () {
+        Vector3 followPosition;
+       
+        if (playerControl.FollowerState == FollowerState.UnFollow)
+        {
+            followPosition = unfollowTransform.position;
+        }
+        else
+        {
+            followPosition = followTransform.position;
+        }
+    
+        transform.position = Vector3.Lerp(transform.position, followPosition, Time.deltaTime * followSpeed);
     }
 }

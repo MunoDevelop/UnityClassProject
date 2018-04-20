@@ -5,6 +5,10 @@ using UnityEngine;
 public class SkeletonController : MonoBehaviour {
 
     Animator animator;
+   
+
+    private GameState gameState;
+
 
     public void beAttacked()
     {
@@ -26,11 +30,24 @@ public class SkeletonController : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-		
-	}
+        GameObject gameRoot = GameObject.Find("GameRoot");
+
+        gameState = gameRoot.GetComponent<GameState>();
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+    private void OnTriggerEnter(Collider other)
+    {
+        bool useGravity = GetComponent<Rigidbody>().useGravity;
+        if (other.tag == "Player"&& (useGravity==false))
+        {
+            gameState.HealthPoint--;
+        }
+       ;
+        
+    }
 }
