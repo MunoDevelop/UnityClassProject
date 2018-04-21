@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+
 
 public class GameState : MonoBehaviour {
     private int gamePoint = 0 ;
@@ -28,6 +31,19 @@ public class GameState : MonoBehaviour {
         }
     }
 
+    public int GamePoint
+    {
+        get
+        {
+            return gamePoint;
+        }
+
+        set
+        {
+            gamePoint = value;
+        }
+    }
+
     private void Awake()
     {
         mapCreator = GetComponent<MapCreator>();
@@ -40,16 +56,29 @@ public class GameState : MonoBehaviour {
 	void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        gamePoint = mapCreator.TilesCreated * 10;
+
+   
+
+    public IEnumerator loadScene()
+    {
+
+        yield return new WaitForSeconds(2.1f);
+        
+
+    }
+    // Update is called once per frame
+    void Update () {
+        GamePoint = mapCreator.TilesCreated * 10;
         slider.value = healthPoint;
-        text.text = gamePoint.ToString();
+        text.text = GamePoint.ToString();
 
         if(healthPoint == 0)
         {
             Time.timeScale = 0;
+            DontDestroyOnLoad(gameObject);
+            SceneManager.LoadScene("finalScene");
+            //StartCoroutine(loadScene());
+            
         }
 
     }

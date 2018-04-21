@@ -199,9 +199,18 @@ private void Awake()
 
 
         monsterListUpdate();
+
+        playerPositionCheck();
     }
 
-
+    void playerPositionCheck()
+    {
+        if (transform.position.y < -5)
+        {
+            //Debug.Log("s");
+            gameRoot.GetComponent<GameState>().HealthPoint = 0;
+        }
+    }
 
     private void LateUpdate()
     {

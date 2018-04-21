@@ -288,6 +288,8 @@ public class MapCreator : MonoBehaviour {
 
     void Awake () {
 
+        
+
         noiseSeed = Random.Range(12.5f, 14.3f);
 
        for (int i = 0; i < 50; i++)
@@ -295,6 +297,12 @@ public class MapCreator : MonoBehaviour {
             createTile();
         }
     }
+
+    private void Start()
+    {
+        Time.timeScale = 1;
+    }
+
 
     void replaceTile(float playerxPos)
     {

@@ -286,10 +286,13 @@
     <Compile Include="Assets\Scripts\BlockCreator.cs" />
     <Compile Include="Assets\Scripts\BulletControl.cs" />
     <Compile Include="Assets\Scripts\CameraControl.cs" />
+    <Compile Include="Assets\Scripts\DataSender.cs" />
     <Compile Include="Assets\Scripts\GameRoot.cs" />
     <Compile Include="Assets\Scripts\GameState.cs" />
     <Compile Include="Assets\Scripts\ItemControl.cs" />
     <Compile Include="Assets\Scripts\LevelControl.cs" />
+    <Compile Include="Assets\Scripts\loadLevel.cs" />
+    <Compile Include="Assets\Scripts\LoadScene.cs" />
     <Compile Include="Assets\Scripts\MapCreator.cs" />
     <Compile Include="Assets\Scripts\Moderator.cs" />
     <Compile Include="Assets\Scripts\PlayerControl.cs" />
